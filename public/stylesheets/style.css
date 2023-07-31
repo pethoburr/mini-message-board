@@ -1,0 +1,59 @@
+body {
+  width: 100vw;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+ul {
+  height: 20rem;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+li {
+  list-style: none;
+  border: 2px solid black;
+  margin: 5px;
+  padding: 5px;
+  width: 40rem;
+}
+
+a {
+  margin: 2rem;
+}
+
+label{
+  padding: 5px;
+}
+
+#second {
+  margin-top: 1rem;
+}
+
+button{
+  padding: 5px;
+  margin-top: 2rem;
+  max-width: 50%;
+  align-self: center;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+textarea{
+  width: 25rem;
+  padding-bottom: 2rem;
+}
+
+h1 {
+  border-bottom: 2px solid black;
+}
+
+a {
+  color: #00B7FF;
+}
