@@ -1,6 +1,23 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const mongoDB = "mongodb+srv://mpahal123:admin@cluster0.9myeoo2.mongodb.net/?retryWrites=true&w=majority";
+const Schema = mongoose.Schema;
 
+const modelSchema = new Schema({
+    name: String,
+    message: String,
+    date: String
+})
+
+const MsgModel = mongoose.model("MsgModel", modelSchema);
+
+async function main() {
+    await mongoose.connect(mongoDB);
+}
+   
+main().catch((err) => console.log(err));
 const modifyDate = (date) => {
   const currentDate = date;
   const year = currentDate.getFullYear();
@@ -20,32 +37,35 @@ const modifyDate = (date) => {
   return modifiedDate;
 }
 
-const tdaysDate = new Date();
-const tdaysModified = modifyDate(tdaysDate);
+const messages = [];
 
-const messages = [
-  {
-    text: 'Hi there',
-    user: 'bencho',
-    added: tdaysModified
-  },
-  {
-    text: 'kidda saleya',
-    user: 'kutha',
-    added: tdaysModified
-  }
-]
+async function loadMsgs () {
+  const msgs = await MsgModel.find().exec();
+  msgs.forEach(msg => messages.push(msg));
+}
+
+loadMsgs();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Mini Messageboard', messages });
 });
 
-router.post('/new', function(req, res) {
+router.post('/new', async function(req, res) {
   const currentDate = new Date();
   const modifiedDate = modifyDate(currentDate);
   const { name, message } = req.body;
-  messages.push({text: message, user: name, added: modifiedDate})
+  console.log(name, message);
+  const instance = new MsgModel({
+    name: name,
+    message: message,
+    date: modifiedDate
+  })
+
+  await instance.save();
+  const msgs = await MsgModel.find().exec();
+  console.log(msgs);
+  messages.push(instance);
   res.redirect('/');
 })
 
