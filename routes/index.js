@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://mpahal123:admin@cluster0.9myeoo2.mongodb.net/?retryWrites=true&w=majority";
+const dev_db_url = "mongodb+srv://mpahal123:admin@cluster0.9myeoo2.mongodb.net/?retryWrites=true&w=majority";
+
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
 const Schema = mongoose.Schema;
 
 const modelSchema = new Schema({
@@ -37,17 +39,15 @@ const modifyDate = (date) => {
   return modifiedDate;
 }
 
-const messages = [];
-
 async function loadMsgs () {
-  const msgs = await MsgModel.find().exec();
-  msgs.forEach(msg => messages.push(msg));
+  
 }
 
-loadMsgs();
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
+  const messages = [];
+  const msgs = await MsgModel.find().exec();
+  msgs.forEach(msg => messages.push(msg));
   res.render('index', { title: 'Mini Messageboard', messages });
 });
 
@@ -63,9 +63,6 @@ router.post('/new', async function(req, res) {
   })
 
   await instance.save();
-  const msgs = await MsgModel.find().exec();
-  console.log(msgs);
-  messages.push(instance);
   res.redirect('/');
 })
 
