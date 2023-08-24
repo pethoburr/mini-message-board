@@ -3,11 +3,13 @@ extends layout
 block content 
     form(action="/new" method="post")
         h1 Enter Message 
-        label(for="name") Name: 
-        input(type="text" name="name" required)
-
-        label(for="message" id="second") Mesage: 
-        textarea(name="message" rows="3" required)
+        form
+            .form-group
+                input.form-control(type='text', id='name', placeholder=' ')
+                label.floating-label(for='name') Name
+            .form-group
+                textarea.form-control(id='message', rows='4', placeholder=' ')
+                label.floating-label(for='message') Message
 
         button(type="submit") Submit
     a(href="/") Back

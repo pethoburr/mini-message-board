@@ -1,13 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  div Welcome to #{title}
+  header 
+    h2= title
+    div(id='div') Welcome to #{title}!
   h2 Messages
   ul 
     each message in messages 
       li 
-        p #{message.name}
+        p(id='first') #{message.name}
         p #{message.message}
         p #{message.date}
   a(href="/new") Add message
